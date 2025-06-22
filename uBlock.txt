@@ -1,8 +1,8 @@
 ! Title: Blocklist for Far-Right and Anti-Semitic Websites
 ! Description: Blocklist for Far-Right and Anti-Semitic Websites
 ! Version: 1.0.1
-! Homepage: https://the13joker1.github.io/
-! Last modified: 2025-04-22T16:08:39.475Z
+! Homepage: https://its-tujo.github.io/
+! Last modified: 2025-06-22T18:30:00.000Z
 ! 
 
 
