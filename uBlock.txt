@@ -1,6 +1,6 @@
 ! Title: Blocklist for Far-Right and Anti-Semitic Websites
-! Description: Blocklist for Far-Right and Anti-Semitic Websites
-! Version: 1.0.2
+! Description: A Blocklist for Far-Right and Anti-Semitic Websites
+! Version: 1.0.3
 ! Homepage: https://its-tujo.github.io/
 ! Last modified: 2025-12-2T09:40:00.000Z
 ! 
