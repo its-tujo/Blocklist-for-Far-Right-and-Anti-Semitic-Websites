@@ -21,6 +21,7 @@
 *.freie-nationalisten.de
 *.freies-netz.com
 *.gegenstimme.tv
+*.generationdeutschland.de
 *.idealo.de
 *.jobs.de
 *.kla.tv
@@ -52,6 +53,7 @@
 *.wochenblick.at
 *.zuerst.de
 
+
 allesroger.at
 altermedia-deutschland.info
 anderweltonline.com
@@ -75,6 +77,7 @@ epochtimes.de
 freie-nationalisten.de
 freies-netz.com
 gegenstimme.tv
+generationdeutschland.de
 idealo.de
 jobs.de
 kla.tv
