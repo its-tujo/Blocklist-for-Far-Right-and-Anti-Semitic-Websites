@@ -13,7 +13,7 @@ Only the latest version of this blocklist is actively maintained. If you notice 
 If you discover a vulnerability, misuse vector, or anything that could harm users or weaken the integrity of this blocklist (e.g., incorrect or abusable entries), please report it **privately and responsibly**.
 
 **How to report:**
-- Preferred contact: [the13joker1@gmail.com](mailto:the13joker1@gmail.com)
+- Preferred contact: [security@tujo.is-cool.dev](mailto:security@tujo.is-cool.dev)
 - Alternatively: Open a [GitHub Issue](../../issues) (public; only for non-sensitive topics)
 
 **What to expect:**
