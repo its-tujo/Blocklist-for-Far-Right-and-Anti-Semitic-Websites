@@ -43,3 +43,10 @@ If you find additional domains that should be included in this list, feel free t
 ## Disclaimer
 
 This blocklist is intended to help users avoid content from extremist and harmful sources. Please note that some of the websites included may be legally restricted in certain countries. Always follow local laws and regulations.
+
+## License
+
+This project is licensed under the **Unlicense** and is released into the public domain.
+
+For more information, see the [LICENSE](./LICENSE) file or visit <https://unlicense.org/>.
+
