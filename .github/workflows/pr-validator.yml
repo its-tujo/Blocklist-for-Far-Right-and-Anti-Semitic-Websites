@@ -3,7 +3,7 @@ name: PR Domain Validator
 on:
   pull_request:
     paths:
-      - BlockList.txt
+      - "BlockList.txt"
 
 permissions:
   contents: read
@@ -14,12 +14,13 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout
+        uses: actions/checkout@v4
         with:
           fetch-depth: 0
 
-      - name: Validate changed domains
-        id: validate
+      - name: Get changed lines
+        id: diff
         shell: bash
         run: |
           git fetch origin "${{ github.base_ref }}"
@@ -27,81 +28,88 @@ jobs:
           CHANGED=$(git diff --unified=0 origin/${{ github.base_ref }}...HEAD -- BlockList.txt \
             | grep '^+' \
             | grep -v '^\+\+\+' \
-            | sed 's/^+//')
+            | sed 's/^+//' \
+            || true)
 
-          echo "Changed entries:"
+          echo "Changed lines:"
           echo "$CHANGED"
 
-          errors=""
+          ERRORS=""
 
           while IFS= read -r line; do
-
-            [ -z "$line" ] && continue
-
             clean=$(echo "$line" | xargs)
 
+            [ -z "$clean" ] && continue
+
+            # URL check
             if [[ "$clean" =~ ^https?:// ]]; then
-              errors+="• URL instead of domain: $clean"$'\n'
+              ERRORS="$ERRORS• URL not allowed: $clean"$'\n'
               continue
             fi
 
+            # path check
             if [[ "$clean" == */* ]]; then
-              errors+="• Path detected: $clean"$'\n'
+              ERRORS="$ERRORS• Path detected: $clean"$'\n'
               continue
             fi
 
+            # query check
             if [[ "$clean" == *"?"* ]]; then
-              errors+="• Query string detected: $clean"$'\n'
+              ERRORS="$ERRORS• Query string detected: $clean"$'\n'
               continue
             fi
 
-            if [[ ! "$clean" =~ ^[a-z0-9.-]+\.[a-z]{2,}$ ]]; then
-              errors+="• Invalid domain format: $clean"$'\n'
+            # format check
+            if ! [[ "$clean" =~ ^[a-z0-9.-]+\.[a-z]{2,}$ ]]; then
+              ERRORS="$ERRORS• Invalid domain format: $clean"$'\n'
             fi
 
           done <<< "$CHANGED"
 
-          {
-            echo "errors<<EOF"
-            echo "$errors"
-            echo "EOF"
-          } >> "$GITHUB_OUTPUT"
+          echo "errors<<EOF" >> $GITHUB_OUTPUT
+          echo "$ERRORS" >> $GITHUB_OUTPUT
+          echo "EOF" >> $GITHUB_OUTPUT
 
-          if [ -n "$errors" ]; then
+          if [ -n "$ERRORS" ]; then
+            echo "FAILED=1" >> $GITHUB_OUTPUT
             exit 1
           fi
 
-      - name: Comment on PR
+          echo "FAILED=0" >> $GITHUB_OUTPUT
+
+      - name: Comment on PR (on failure)
         if: failure()
         uses: actions/github-script@v7
         with:
           script: |
-            const errors = `${{ steps.validate.outputs.errors }}`;
+            const errors = `${{ steps.diff.outputs.errors }}`;
+
+            const body = [
+              "## ❌ Domain Validation Failed",
+              "",
+              "The following issues were detected:",
+              "",
+              errors || "Unknown error",
+              "",
+              "## Allowed format",
+              "```",
+              "example.com",
+              "sub.example.com",
+              "```",
+              "",
+              "## Not allowed",
+              "```",
+              "https://example.com",
+              "example.com/path",
+              "example.com?query=1",
+              "```",
+              "",
+              "Please fix the PR and push again."
+            ].join("\n");
 
             github.rest.issues.createComment({
               owner: context.repo.owner,
               repo: context.repo.repo,
               issue_number: context.issue.number,
-              body: `## ❌ Domain Validation Failed
-
-The following problems were found:
-
-${errors}
-
-### Accepted format
-
-\`\`\`
-example.com
-sub.example.com
-\`\`\`
-
-### Not accepted
-
-\`\`\`
-https://example.com
-example.com/path
-example.com?query=1
-\`\`\`
-
-Please update your PR and push again.`
+              body
             });
