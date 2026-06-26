@@ -1,13 +1,14 @@
 # Ignore Everything
 *
 
-# Exception for the .gitignore file itself
+# Exceptions
 !.gitignore
-
-# Exception for README.md
 !README.md
 
-# Exception for the block list files
 !BlockList.txt
 !LeechBlock.txt
 !uBlock.txt
+
+# allow generated reports
+!report.md
+!step_summary.md
