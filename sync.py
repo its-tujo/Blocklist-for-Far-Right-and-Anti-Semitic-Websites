@@ -3,55 +3,63 @@ from datetime import datetime
 
 SOURCE = "https://raw.githubusercontent.com/its-tujo/Blocklist-for-Far-Right-and-Anti-Semitic-Websites/main/BlockList.txt"
 
-def normalize(line):
+
+def normalize(line: str):
     line = line.strip()
     if not line or line.startswith("#"):
         return None
     return line.replace("https://", "").replace("http://", "").strip("/")
 
+
+def load_set_from_file(path):
+    try:
+        with open(path, "r") as f:
+            return {normalize(l) for l in f.read().splitlines() if normalize(l)}
+    except FileNotFoundError:
+        return set()
+
+
+def write_file(path, lines):
+    with open(path, "w") as f:
+        f.write("\n".join(lines))
+
+
 def main():
     raw = requests.get(SOURCE, timeout=30).text.splitlines()
 
-    new_domains = set()
+    # clean upstream
+    new_domains = {normalize(l) for l in raw}
+    new_domains = {d for d in new_domains if d}
 
-    for line in raw:
-        d = normalize(line)
-        if d:
-            new_domains.add(d)
+    # old local
+    old_domains = load_set_from_file("BlockList.txt")
 
-    try:
-        with open("BlockList.txt", "r") as f:
-            old_domains = set(f.read().splitlines())
-    except FileNotFoundError:
-        old_domains = set()
-
+    # diff (NOW consistent)
     added = sorted(new_domains - old_domains)
     removed = sorted(old_domains - new_domains)
+
     all_domains = sorted(new_domains)
 
+    # uBlock format
     ublock = sorted(f"||{d}^" for d in all_domains)
 
+    # LeechBlock format
     leechblock = sorted(
         {d for d in all_domains} |
         {f"*.{d}" for d in all_domains}
     )
 
-    # write files
-    with open("BlockList.txt", "w") as f:
-        f.write("\n".join(all_domains))
+    # write outputs
+    write_file("BlockList.txt", all_domains)
+    write_file("uBlock.txt", ublock)
+    write_file("LeechBlock.txt", leechblock)
 
-    with open("uBlock.txt", "w") as f:
-        f.write("\n".join(ublock))
-
-    with open("LeechBlock.txt", "w") as f:
-        f.write("\n".join(leechblock))
-
-    # markdown report
+    # report (for logs / artifacts)
     report = []
     report.append(f"# Blocklist Sync Report")
     report.append(f"Generated: {datetime.utcnow().isoformat()} UTC\n")
 
-    report.append(f"## Summary")
+    report.append("## Summary")
     report.append(f"- Total domains: {len(all_domains)}")
     report.append(f"- Added: {len(added)}")
     report.append(f"- Removed: {len(removed)}\n")
@@ -66,12 +74,10 @@ def main():
         report.extend([f"- {d}" for d in removed])
         report.append("")
 
-    with open("report.md", "w") as f:
-        f.write("\n".join(report))
+    write_file("report.md", report)
 
-    # GitHub Step Summary (special file)
-    with open("step_summary.md", "w") as f:
-        f.write("\n".join(report))
+    # GitHub Step Summary
+    write_file("step_summary.md", report)
 
 
 if __name__ == "__main__":
