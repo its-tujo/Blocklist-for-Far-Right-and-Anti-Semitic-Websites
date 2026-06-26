@@ -1,52 +1,89 @@
-# Anti-Extremism and Anti-Anti-Semitism Blocklist
+# Anti-Extremism Blocklist
 
-This repository contains a blocklist of domains associated with far-right, extremist, and anti-Semitic content. The list can be used with popular content blockers like [uBlock Origin](https://github.com/gorhill/uBlock) or [LeechBlock NG](https://addons.mozilla.org/de/firefox/addon/leechblock-ng/) to block websites that promote harmful ideologies.
+This repository provides an automated, normalized blocklist of domains associated with far-right, extremist, and anti-semitic content.
+
+The list is designed for use with filtering tools such as:
+
+- [uBlock Origin](https://github.com/gorhill/uBlock)
+- [LeechBlock NG](https://addons.mozilla.org/de/firefox/addon/leechblock-ng/)
+
+---
+
+## How it works
+
+This repository is fully automated:
+
+- A central `BlockList.txt` is used as the source of truth
+- GitHub Actions periodically sync and normalize all entries
+- Output files are generated automatically:
+  - `uBlock.txt`
+  - `LeechBlock.txt`
+- Removed domains are automatically deleted on sync
+
+---
 
 ## Features
 
-- Blocks a wide range of far-right, extremist, and anti-Semitic domains.
-- Includes wildcards for subdomains to ensure comprehensive blocking.
-- **Axel Springer** domains are also included due to concerns about right-wing and potentially harmful content.
-- Compatible with uBlock Origin, LeechBlock Ng and other content blockers.
+- Strict domain normalization (no URLs, no paths)
+- Automatic sorting and deduplication
+- Subdomain support for broader blocking
+- Fully automated CI pipeline
+- Transparent change reporting (diff + logs)
+
+---
+
+## File Structure
+
+BlockList.txt # Source list (normalized domains only)
+uBlock.txt # uBlock Origin filters
+LeechBlock.txt # LeechBlock rules
+report.md # Auto-generated sync report
+
+
+---
 
 ## Installation
 
-### For uBlock Origin
+### uBlock Origin
 
-1. Install [uBlock Origin](https://github.com/gorhill/uBlock).
-2. Open the uBlock Origin dashboard.
-3. Go to the "My Filters" tab.
-4. Copy the contents of the `uBlock.txt` file from this repository.
-5. Paste the list into the "My Filters" section.
-6. Click "Apply changes".
+1. Install uBlock Origin
+2. Open Dashboard → "My Filters"
+3. Paste contents of `uBlock.txt`
+4. Apply changes
 
-### For LeechBlock NG
+---
 
-1. Install [LeechBlock NG](https://addons.mozilla.org/de/firefox/addon/leechblock-ng/).
- 
-   `Can't see the following 3 images? Look in the `Images` Folder.`
-   
-<img width="1464" alt="LeechBlock StepByStep1" src="https://github.com/user-attachments/assets/2107a8b1-bcd8-488f-b93a-6b504a246b38" />
-<img width="1324" alt="LeechBlockStepByStep2" src="https://github.com/user-attachments/assets/c4f9bee2-bc89-43ef-a77d-055a7dc922f2" />
-<img width="851" alt="LeechBlockStepByStep3" src="https://github.com/user-attachments/assets/95e9831a-7a71-4fcb-beb8-74627aa48933" />
+### LeechBlock NG
 
+1. Install LeechBlock NG
+2. Create a block set
+3. Add domains from `LeechBlock.txt`
 
+Supported formats:
+- `example.com`
+- `*.example.com`
 
-## Usage
+---
 
-You can also manually add more domains to the list if you encounter additional far-right or anti-Semitic sites you would like to block. Simply follow the format shown in the Lists.
+## Updates
+
+- Automatic sync via GitHub Actions
+- Runs on schedule
+- Fully regenerated each run
+- No manual editing of generated files
+
+---
 
 ## Contributing
 
-If you find additional domains that should be included in this list, feel free to fork this repository and submit a pull request. Contributions are always welcome!
+See [CONTRIBUTING.md](./CONTRIBUTING.md)
 
-## Disclaimer
+All contributions must follow strict formatting rules.
 
-This blocklist is intended to help users avoid content from extremist and harmful sources. Please note that some of the websites included may be legally restricted in certain countries. Always follow local laws and regulations.
+---
 
 ## License
 
-This project is licensed under the **Unlicense** and is released into the public domain.
+This project is released into the public domain under the **Unlicense**.
 
-For more information, see the [LICENSE](./LICENSE) file or visit <https://unlicense.org/>.
-
+See [LICENSE](./LICENSE).
