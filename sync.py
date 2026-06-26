@@ -1,4 +1,5 @@
 import requests
+from datetime import datetime
 
 SOURCE = "https://raw.githubusercontent.com/its-tujo/Blocklist-for-Far-Right-and-Anti-Semitic-Websites/main/BlockList.txt"
 
@@ -11,36 +12,66 @@ def normalize(line):
 def main():
     raw = requests.get(SOURCE, timeout=30).text.splitlines()
 
-    domains = set()
+    new_domains = set()
 
     for line in raw:
         d = normalize(line)
         if d:
-            domains.add(d)
+            new_domains.add(d)
 
-    # 1) sauber sortiert
-    sorted_domains = sorted(domains)
+    try:
+        with open("BlockList.txt", "r") as f:
+            old_domains = set(f.read().splitlines())
+    except FileNotFoundError:
+        old_domains = set()
 
-    # 2) uBlock Format
-    ublock = sorted(f"||{d}^" for d in sorted_domains)
+    added = sorted(new_domains - old_domains)
+    removed = sorted(old_domains - new_domains)
+    all_domains = sorted(new_domains)
 
-    # 3) LeechBlock Format (beide Varianten pro Domain)
-    leechblock = set()
-    for d in domains:
-        leechblock.add(d)
-        leechblock.add(f"*.{d}")
+    ublock = sorted(f"||{d}^" for d in all_domains)
 
-    leechblock_sorted = sorted(leechblock)
+    leechblock = sorted(
+        {d for d in all_domains} |
+        {f"*.{d}" for d in all_domains}
+    )
 
-    # 4) Dateien komplett überschreiben (wichtig!)
+    # write files
     with open("BlockList.txt", "w") as f:
-        f.write("\n".join(sorted_domains))
+        f.write("\n".join(all_domains))
 
     with open("uBlock.txt", "w") as f:
         f.write("\n".join(ublock))
 
     with open("LeechBlock.txt", "w") as f:
-        f.write("\n".join(leechblock_sorted))
+        f.write("\n".join(leechblock))
+
+    # markdown report
+    report = []
+    report.append(f"# Blocklist Sync Report")
+    report.append(f"Generated: {datetime.utcnow().isoformat()} UTC\n")
+
+    report.append(f"## Summary")
+    report.append(f"- Total domains: {len(all_domains)}")
+    report.append(f"- Added: {len(added)}")
+    report.append(f"- Removed: {len(removed)}\n")
+
+    if added:
+        report.append("## Added")
+        report.extend([f"- {d}" for d in added])
+        report.append("")
+
+    if removed:
+        report.append("## Removed")
+        report.extend([f"- {d}" for d in removed])
+        report.append("")
+
+    with open("report.md", "w") as f:
+        f.write("\n".join(report))
+
+    # GitHub Step Summary (special file)
+    with open("step_summary.md", "w") as f:
+        f.write("\n".join(report))
 
 
 if __name__ == "__main__":
