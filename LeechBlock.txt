@@ -1,6 +1,7 @@
 *.allesroger.at
 *.altermedia-deutschland.info
 *.anderweltonline.com
+*.antaios.de
 *.apolut.net
 *.audiovideofotobild.de
 *.auf1.tv
@@ -15,6 +16,7 @@
 *.computerbildspiele.de
 *.de.rt.com
 *.der-dritte-weg.info
+*.deutschlandkurier.de
 *.dvu.de
 *.epochtimes.com
 *.epochtimes.de
@@ -24,6 +26,8 @@
 *.generationdeutschland.de
 *.idealo.de
 *.jobs.de
+*.journalistenwatch.com
+*.jungefreiheit.de
 *.kla.tv
 *.manova.news
 *.metal-hammer.de
@@ -35,6 +39,7 @@
 *.nationaler-bewegung.de
 *.nationalzeitung.de
 *.neopresse.com
+*.nius.de
 *.nsdap.info
 *.pi-news.net
 *.politico.com
@@ -51,12 +56,16 @@
 *.welt.de
 *.widerstand.info
 *.wochenblick.at
+*.www.afd.de
+*.www.afd.tv
+*.www.compact-online.de
+*.www.einprozent.de
+*.www.linke.de
 *.zuerst.de
-
-
 allesroger.at
 altermedia-deutschland.info
 anderweltonline.com
+antaios.de
 apolut.net
 audiovideofotobild.de
 auf1.tv
@@ -71,6 +80,7 @@ computerbild.de
 computerbildspiele.de
 de.rt.com
 der-dritte-weg.info
+deutschlandkurier.de
 dvu.de
 epochtimes.com
 epochtimes.de
@@ -80,6 +90,8 @@ gegenstimme.tv
 generationdeutschland.de
 idealo.de
 jobs.de
+journalistenwatch.com
+jungefreiheit.de
 kla.tv
 manova.news
 metal-hammer.de
@@ -91,6 +103,7 @@ nationaler-beobachter.de
 nationaler-bewegung.de
 nationalzeitung.de
 neopresse.com
+nius.de
 nsdap.info
 pi-news.net
 politico.com
@@ -107,4 +120,9 @@ volksfront-medien.de
 welt.de
 widerstand.info
 wochenblick.at
+www.afd.de
+www.afd.tv
+www.compact-online.de
+www.einprozent.de
+www.linke.de
 zuerst.de
