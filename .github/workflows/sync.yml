@@ -1,0 +1,36 @@
+name: Sync Blocklists
+
+on:
+  schedule:
+    - cron: "0 */6 * * *"   # alle 6 Stunden
+  workflow_dispatch:        # manuell startbar
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install dependencies
+        run: pip install requests
+
+      - name: Generate blocklists
+        run: python sync.py
+
+      - name: Commit changes
+        run: |
+          git config user.name "blocklist-bot"
+          git config user.email "blocklist-bot@users.noreply.github.com"
+          git add uBlock.txt LeechBlock.txt
+
+          git diff --cached --quiet && echo "No changes" && exit 0
+
+          git commit -m "auto-sync blocklists"
+          git push
