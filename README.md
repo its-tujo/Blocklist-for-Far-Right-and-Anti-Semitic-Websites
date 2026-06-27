@@ -1,4 +1,4 @@
-# Anti-Extremism Blocklist
+# Blocklist for Far-Right and Anti-Semitic Websites
 
 This repository provides an automated, normalized blocklist of domains associated with far-right, extremist, and anti-semitic content.
 
