@@ -1,5 +1,5 @@
 # Blocklist Sync Report
-Generated: 2026-08-20T00:52:40.439907+00:00 UTC
+Generated: 2026-08-20T06:35:05.838088+00:00 UTC
 
 ## Summary
 - Total domains: 66
