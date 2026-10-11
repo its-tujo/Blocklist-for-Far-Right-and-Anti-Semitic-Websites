@@ -1,7 +1,7 @@
 [Adblock Plus 2.0]
-! Version: 202610102100
+! Version: 202610110324
 ! Title: Anti-Extremism & Anti-Semitism Blocklist
-! Last modified: 10 Oct 2026 21:00 UTC
+! Last modified: 11 Oct 2026 03:24 UTC
 ! Expires: 1 days (update frequency)
 ! Homepage: https://github.com/its-tujo/Blocklist-for-Far-Right-and-Anti-Semitic-Websites
 ! License: The Unlicense
